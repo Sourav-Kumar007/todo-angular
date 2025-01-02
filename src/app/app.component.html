@@ -1,0 +1,20 @@
+<main class="main flex justify-center mt-10 bg-gray-100">
+  <div class="w-full max-w-md p-6 bg-yellow-400 rounded-md">
+    <div class="mb-4">
+      <input [(ngModel)]="newTask" placeholder="Enter your name" class="border p-2 rounded-md w-full mb-2" (keyup.enter)="addTask()">
+      <button (click)="addTask()" class="bg-blue-500 text-white px-4 py-2 rounded-md w-full">Add</button>
+    </div>
+    <ul class="mt-4 space-y-2">
+      <li *ngFor="let todoItem of todoList; trackBy: trackById" class="flex items-center space-x-4">
+        <input type="checkbox" (click)="toggleHighlight(todoItem)" class="mr-2 cursor-pointer"/>
+        <div class="mr-2 cursor-pointer" (click)="toggleComplete(todoItem)">
+          <i class="fa-solid fa-xmark text-red-500 text-lg"></i>
+        </div>
+        <div [ngClass]="{'bg-green-500 text-white p-2 rounded-md': todoItem.highlighted, 'line-through text-black text-decoration-line-through': todoItem.completed}">
+          <span>{{ todoItem.task }}</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</main>
+<router-outlet></router-outlet>
