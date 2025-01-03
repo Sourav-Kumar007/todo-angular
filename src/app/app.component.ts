@@ -1,8 +1,8 @@
 import { NgFor } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import {  CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 export interface TodoItem {
   id: number;
@@ -14,24 +14,32 @@ export interface TodoItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, NgFor,CommonModule],
+  imports: [RouterOutlet, CommonModule, NgFor, ReactiveFormsModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   todoList: TodoItem[] = [];
-  newTask: string = '';
+  taskForm!: FormGroup;
+
+  constructor(public formbuilder: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.taskForm = this.formbuilder.group({
+      task: ['']
+    });
+  }
 
   addTask(): void {
-    if (this.newTask.trim() !== '') {
+    if (this.taskForm.valid) {
       const newTodoItem: TodoItem = {
         id: Date.now(),
-        task: this.newTask,
+        task: this.taskForm.value.task,
         completed: false,
-        highlighted: false 
+        highlighted: false
       };
       this.todoList.push(newTodoItem);
-      this.newTask = '';
+      this.taskForm.reset();
     }
   }
 
