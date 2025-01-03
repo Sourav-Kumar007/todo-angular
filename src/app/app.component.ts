@@ -1,6 +1,6 @@
 import { NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -20,15 +20,9 @@ export interface TodoItem {
 })
 export class AppComponent {
   todoList: TodoItem[] = [];
-  taskForm!: FormGroup;
-
-  constructor(public formbuilder: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.taskForm = this.formbuilder.group({
-      task: ['']
-    });
-  }
+  taskForm: FormGroup = new FormGroup({
+    task:new FormControl("",[Validators.required , Validators.minLength(4)])
+  });
 
   addTask(): void {
     if (this.taskForm.valid) {
